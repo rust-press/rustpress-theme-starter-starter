@@ -1,0 +1,63 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tags | {{ site.name }}{% endblock %}
+{% block description %}Browse all tags on {{ site.name }}.{% endblock %}
+
+{% block body_class %}page-tags{% endblock %}
+
+{% block content %}
+<div class="container">
+  {# Page Header #}
+  <header class="page-header">
+    <h1 class="page-title">Tags</h1>
+    <p class="page-description">Browse posts by tag.</p>
+  </header>
+
+  {# Tags Cloud #}
+  {% if tags | length > 0 %}
+  <div class="tags-cloud">
+    {% for tag in tags %}
+    <a href="{{ tag.url }}" class="tag-item">
+      #{{ tag.name }}
+      <span class="tag-count">{{ tag.post_count }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-center" style="color: var(--text-secondary);">No tags yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.tags-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  transition: all var(--transition-fast);
+}
+
+.tag-item:hover {
+  background-color: var(--text-primary);
+  color: var(--text-inverse);
+}
+
+.tag-count {
+  font-size: var(--text-xs);
+  opacity: 0.7;
+}
+</style>
+{% endblock %}

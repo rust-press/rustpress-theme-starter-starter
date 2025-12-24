@@ -1,0 +1,71 @@
+{# Sidebar - Minimal Widgets #}
+<aside class="sidebar">
+  {# About Widget #}
+  {% if widgets.sidebar contains 'about' or not widgets %}
+  <div class="widget widget-about">
+    <h3 class="widget-title">About</h3>
+    <p>{{ site.description | default(value='A minimal blog theme focused on readability and simplicity.') }}</p>
+  </div>
+  {% endif %}
+
+  {# Recent Posts Widget #}
+  {% if widgets.sidebar contains 'recent-posts' or not widgets %}
+  <div class="widget widget-recent-posts">
+    <h3 class="widget-title">Recent Posts</h3>
+    <ul>
+      {% for post in recent_posts | slice(end=5) %}
+      <li>
+        <a href="{{ post.url }}">{{ post.title }}</a>
+        <span class="date">{{ post.date | date(format='%b %d, %Y') }}</span>
+      </li>
+      {% else %}
+      <li>
+        <a href="#">Getting Started with Starter</a>
+        <span class="date">Jan 1, 2025</span>
+      </li>
+      <li>
+        <a href="#">Customizing Your Theme</a>
+        <span class="date">Jan 2, 2025</span>
+      </li>
+      <li>
+        <a href="#">Writing Great Content</a>
+        <span class="date">Jan 3, 2025</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {# Categories Widget #}
+  {% if widgets.sidebar contains 'categories' or not widgets %}
+  <div class="widget widget-categories">
+    <h3 class="widget-title">Categories</h3>
+    <ul>
+      {% for category in categories %}
+      <li>
+        <a href="{{ category.url }}">
+          {{ category.name }}
+          <span class="count">{{ category.post_count }}</span>
+        </a>
+      </li>
+      {% else %}
+      <li><a href="/category/tutorials">Tutorials <span class="count">5</span></a></li>
+      <li><a href="/category/guides">Guides <span class="count">3</span></a></li>
+      <li><a href="/category/tips">Tips <span class="count">8</span></a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {# Newsletter Widget #}
+  {% if widgets.sidebar contains 'newsletter' or not widgets %}
+  <div class="widget widget-newsletter">
+    <h3 class="widget-title">Newsletter</h3>
+    <p>Subscribe to get the latest posts delivered to your inbox.</p>
+    <form class="newsletter-form" action="{{ newsletter.action | default(value='/api/subscribe') }}" method="POST">
+      <input type="email" name="email" placeholder="Your email" required>
+      <button type="submit" class="btn btn--primary">Subscribe</button>
+    </form>
+  </div>
+  {% endif %}
+</aside>

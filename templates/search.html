@@ -1,0 +1,95 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Search{% if query %}: {{ query }}{% endif %} | {{ site.name }}{% endblock %}
+
+{% block body_class %}page-search{% endblock %}
+
+{% block content %}
+<div class="container">
+  {# Search Header #}
+  <header class="page-header">
+    <h1 class="page-title">Search</h1>
+  </header>
+
+  {# Search Form #}
+  <form action="/search" method="GET" class="search-form mb-8">
+    <input type="search" name="q" value="{{ query }}" placeholder="Search..." class="search-input" autofocus>
+    <button type="submit" class="btn btn--primary">Search</button>
+  </form>
+
+  {# Search Results #}
+  {% if query %}
+  <div class="search-results">
+    {% if results | length > 0 %}
+    <p class="mb-8">Found {{ pagination.total }} result{% if pagination.total != 1 %}s{% endif %} for "{{ query }}"</p>
+
+    <div class="posts-list">
+      {% for result in results %}
+      <article class="post-item search-result-item">
+        <div class="post-meta">
+          {% if result.date %}
+          <time datetime="{{ result.date | date(format='%Y-%m-%d') }}">
+            {{ result.date | date(format='%B %d, %Y') }}
+          </time>
+          {% endif %}
+          {% if result.type %}
+          <span class="post-meta-divider"></span>
+          <span>{{ result.type | capitalize }}</span>
+          {% endif %}
+        </div>
+
+        <h2 class="post-title">
+          <a href="{{ result.url }}">{{ result.title }}</a>
+        </h2>
+
+        {% if result.excerpt %}
+        <p class="post-excerpt">{{ result.excerpt | striptags | truncate(length=200) }}</p>
+        {% endif %}
+
+        <a href="{{ result.url }}" class="post-read-more">
+          View
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+
+    {# Pagination #}
+    {% if pagination.total_pages > 1 %}
+    <nav class="pagination" aria-label="Search results pagination">
+      {% if pagination.has_prev %}
+      <a href="/search?q={{ query }}&page={{ pagination.current - 1 }}" aria-label="Previous page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </a>
+      {% endif %}
+
+      {% for page in pagination.pages %}
+      {% if page == '...' %}
+      <span class="dots">...</span>
+      {% elif page == pagination.current %}
+      <span class="current">{{ page }}</span>
+      {% else %}
+      <a href="/search?q={{ query }}&page={{ page }}">{{ page }}</a>
+      {% endif %}
+      {% endfor %}
+
+      {% if pagination.has_next %}
+      <a href="/search?q={{ query }}&page={{ pagination.current + 1 }}" aria-label="Next page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="error-page" style="padding: var(--space-12) 0;">
+      <h2>No results found</h2>
+      <p class="error-message">No results found for "{{ query }}". Try a different search term.</p>
+    </div>
+    {% endif %}
+  </div>
+  {% else %}
+  <p class="text-center" style="color: var(--text-secondary);">Enter a search term to find posts, pages, and more.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Categories | {{ site.name }}{% endblock %}
+{% block description %}Browse all categories on {{ site.name }}.{% endblock %}
+
+{% block body_class %}page-categories{% endblock %}
+
+{% block content %}
+<div class="container">
+  {# Page Header #}
+  <header class="page-header">
+    <h1 class="page-title">Categories</h1>
+    <p class="page-description">Browse posts by topic.</p>
+  </header>
+
+  {# Categories List #}
+  {% if categories | length > 0 %}
+  <div class="categories-list">
+    {% for category in categories %}
+    <a href="{{ category.url }}" class="category-item">
+      <h2 class="category-name">{{ category.name }}</h2>
+      {% if category.description %}
+      <p class="category-description">{{ category.description | truncate(length=100) }}</p>
+      {% endif %}
+      <span class="category-count">{{ category.post_count }} post{% if category.post_count != 1 %}s{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-center" style="color: var(--text-secondary);">No categories yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.categories-list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.category-item {
+  display: block;
+  padding: var(--space-6);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.category-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.category-name {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+}
+
+.category-description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.category-count {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+</style>
+{% endblock %}

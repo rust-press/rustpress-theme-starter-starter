@@ -1,0 +1,98 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% if archive.type == 'category' %}{{ archive.name }}{% elif archive.type == 'tag' %}#{{ archive.name }}{% elif archive.type == 'author' %}{{ archive.name }}{% else %}Blog{% endif %} | {{ site.name }}{% endblock %}
+
+{% block body_class %}page-archive{% endblock %}
+
+{% block content %}
+<div class="container">
+  {# Archive Header #}
+  <header class="archive-header">
+    {% if archive.type == 'category' %}
+    <span class="archive-label">Category</span>
+    <h1 class="archive-title">{{ archive.name }}</h1>
+    {% if archive.description %}
+    <p>{{ archive.description }}</p>
+    {% endif %}
+    {% elif archive.type == 'tag' %}
+    <span class="archive-label">Tag</span>
+    <h1 class="archive-title">#{{ archive.name }}</h1>
+    {% elif archive.type == 'author' %}
+    <span class="archive-label">Author</span>
+    <h1 class="archive-title">{{ archive.name }}</h1>
+    {% if archive.bio %}
+    <p>{{ archive.bio }}</p>
+    {% endif %}
+    {% else %}
+    <h1 class="archive-title">Blog</h1>
+    {% endif %}
+    <span class="archive-count">{{ pagination.total }} post{% if pagination.total != 1 %}s{% endif %}</span>
+  </header>
+
+  {# Posts List #}
+  {% if posts | length > 0 %}
+  <section class="posts-list">
+    {% for post in posts %}
+    <article class="post-item">
+      <div class="post-meta">
+        <time datetime="{{ post.date | date(format='%Y-%m-%d') }}">
+          {{ post.date | date(format='%B %d, %Y') }}
+        </time>
+        {% if post.reading_time %}
+        <span class="post-meta-divider"></span>
+        <span>{{ post.reading_time }} min read</span>
+        {% endif %}
+      </div>
+
+      <h2 class="post-title">
+        <a href="{{ post.url }}">{{ post.title }}</a>
+      </h2>
+
+      {% if post.excerpt %}
+      <p class="post-excerpt">{{ post.excerpt | striptags | truncate(length=200) }}</p>
+      {% endif %}
+
+      <a href="{{ post.url }}" class="post-read-more">
+        Read more
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </article>
+    {% endfor %}
+  </section>
+
+  {# Pagination #}
+  {% if pagination.total_pages > 1 %}
+  <nav class="pagination" aria-label="Posts pagination">
+    {% if pagination.has_prev %}
+    <a href="{{ pagination.prev_url }}" aria-label="Previous page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </a>
+    {% endif %}
+
+    {% for page in pagination.pages %}
+    {% if page == '...' %}
+    <span class="dots">...</span>
+    {% elif page == pagination.current %}
+    <span class="current">{{ page }}</span>
+    {% else %}
+    <a href="{{ pagination.base_url }}?page={{ page }}">{{ page }}</a>
+    {% endif %}
+    {% endfor %}
+
+    {% if pagination.has_next %}
+    <a href="{{ pagination.next_url }}" aria-label="Next page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+  {% else %}
+  <div class="error-page" style="padding: var(--space-16) 0;">
+    <h2>No posts found</h2>
+    <p class="error-message">There are no posts in this section yet.</p>
+    <a href="/" class="btn btn--primary">Go to Homepage</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

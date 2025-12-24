@@ -1,0 +1,115 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ author.name }} | {{ site.name }}{% endblock %}
+{% block description %}{{ author.bio | default(value='Posts by ' ~ author.name) | striptags | truncate(length=160) }}{% endblock %}
+
+{% block body_class %}page-author{% endblock %}
+
+{% block content %}
+<div class="container">
+  {# Author Header #}
+  <header class="author-header">
+    <div class="author-box" style="margin-bottom: var(--space-8);">
+      {% if author.avatar %}
+      <div class="author-avatar">
+        <img src="{{ author.avatar }}" alt="{{ author.name }}">
+      </div>
+      {% endif %}
+      <div class="author-info">
+        <h1 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);">{{ author.name }}</h1>
+        {% if author.role %}
+        <p style="color: var(--color-accent); font-size: var(--text-sm); margin-bottom: var(--space-2);">{{ author.role }}</p>
+        {% endif %}
+        {% if author.bio %}
+        <p>{{ author.bio }}</p>
+        {% endif %}
+        {% if author.social %}
+        <div class="author-social">
+          {% if author.social.twitter %}
+          <a href="{{ author.social.twitter }}" target="_blank" rel="noopener" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          {% endif %}
+          {% if author.social.github %}
+          <a href="{{ author.social.github }}" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          {% endif %}
+          {% if author.social.website %}
+          <a href="{{ author.social.website }}" target="_blank" rel="noopener" aria-label="Website">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <p style="color: var(--text-tertiary); font-size: var(--text-sm);">{{ pagination.total }} post{% if pagination.total != 1 %}s{% endif %}</p>
+  </header>
+
+  {# Author Posts #}
+  {% if posts | length > 0 %}
+  <section class="posts-list">
+    {% for post in posts %}
+    <article class="post-item">
+      <div class="post-meta">
+        <time datetime="{{ post.date | date(format='%Y-%m-%d') }}">
+          {{ post.date | date(format='%B %d, %Y') }}
+        </time>
+        {% if post.reading_time %}
+        <span class="post-meta-divider"></span>
+        <span>{{ post.reading_time }} min read</span>
+        {% endif %}
+      </div>
+
+      <h2 class="post-title">
+        <a href="{{ post.url }}">{{ post.title }}</a>
+      </h2>
+
+      {% if post.excerpt %}
+      <p class="post-excerpt">{{ post.excerpt | striptags | truncate(length=200) }}</p>
+      {% endif %}
+
+      <a href="{{ post.url }}" class="post-read-more">
+        Read more
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </article>
+    {% endfor %}
+  </section>
+
+  {# Pagination #}
+  {% if pagination.total_pages > 1 %}
+  <nav class="pagination" aria-label="Posts pagination">
+    {% if pagination.has_prev %}
+    <a href="{{ author.url }}?page={{ pagination.current - 1 }}" aria-label="Previous page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </a>
+    {% endif %}
+
+    {% for page in pagination.pages %}
+    {% if page == '...' %}
+    <span class="dots">...</span>
+    {% elif page == pagination.current %}
+    <span class="current">{{ page }}</span>
+    {% else %}
+    <a href="{{ author.url }}?page={{ page }}">{{ page }}</a>
+    {% endif %}
+    {% endfor %}
+
+    {% if pagination.has_next %}
+    <a href="{{ author.url }}?page={{ pagination.current + 1 }}" aria-label="Next page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+  {% else %}
+  <div class="error-page" style="padding: var(--space-16) 0;">
+    <h2>No posts yet</h2>
+    <p class="error-message">This author hasn't published any posts yet.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

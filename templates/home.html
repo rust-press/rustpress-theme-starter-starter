@@ -1,0 +1,122 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ site.name }} - {{ site.tagline | default(value='A Minimal Blog') }}{% endblock %}
+{% block description %}{{ site.description }}{% endblock %}
+
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+<div class="container">
+  {# Optional Hero/Intro #}
+  {% if site.show_intro | default(value=true) %}
+  <section class="home-intro">
+    <h1>{{ site.intro_title | default(value='Welcome') }}</h1>
+    <p class="intro-text">{{ site.intro_text | default(value=site.description) | default(value='A clean, minimal space for thoughts and ideas.') }}</p>
+  </section>
+  {% endif %}
+
+  {# Posts List #}
+  <section class="posts-list">
+    {% for post in posts %}
+    <article class="post-item">
+      {# Post Meta #}
+      <div class="post-meta">
+        <time datetime="{{ post.date | date(format='%Y-%m-%d') }}">
+          {{ post.date | date(format='%B %d, %Y') }}
+        </time>
+        {% if post.category %}
+        <span class="post-meta-divider"></span>
+        <a href="{{ post.category.url }}">{{ post.category.name }}</a>
+        {% endif %}
+        {% if post.reading_time %}
+        <span class="post-meta-divider"></span>
+        <span>{{ post.reading_time }} min read</span>
+        {% endif %}
+      </div>
+
+      {# Post Title #}
+      <h2 class="post-title">
+        <a href="{{ post.url }}">{{ post.title }}</a>
+      </h2>
+
+      {# Post Excerpt #}
+      {% if post.excerpt %}
+      <p class="post-excerpt">{{ post.excerpt | striptags | truncate(length=200) }}</p>
+      {% endif %}
+
+      {# Read More Link #}
+      <a href="{{ post.url }}" class="post-read-more">
+        Read more
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </article>
+    {% else %}
+    {# No posts fallback #}
+    <article class="post-item">
+      <div class="post-meta">
+        <time>January 1, 2025</time>
+      </div>
+      <h2 class="post-title">
+        <a href="#">Welcome to Your New Blog</a>
+      </h2>
+      <p class="post-excerpt">This is a sample post. Start creating content and it will appear here. The Starter theme provides a clean, minimal foundation for your writing.</p>
+      <a href="#" class="post-read-more">
+        Read more
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </article>
+    {% endfor %}
+  </section>
+
+  {# Pagination #}
+  {% if pagination.total_pages > 1 %}
+  <nav class="pagination" aria-label="Posts pagination">
+    {% if pagination.has_prev %}
+    <a href="{{ pagination.prev_url }}" aria-label="Previous page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </a>
+    {% endif %}
+
+    {% for page in pagination.pages %}
+    {% if page == '...' %}
+    <span class="dots">...</span>
+    {% elif page == pagination.current %}
+    <span class="current">{{ page }}</span>
+    {% else %}
+    <a href="/?page={{ page }}">{{ page }}</a>
+    {% endif %}
+    {% endfor %}
+
+    {% if pagination.has_next %}
+    <a href="{{ pagination.next_url }}" aria-label="Next page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.home-intro {
+  text-align: center;
+  padding: var(--space-16) 0;
+  margin-bottom: var(--space-12);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.home-intro h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-4);
+}
+
+.intro-text {
+  font-size: var(--text-xl);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: var(--leading-relaxed);
+}
+</style>
+{% endblock %}

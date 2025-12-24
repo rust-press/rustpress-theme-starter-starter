@@ -1,0 +1,24 @@
+{# Mobile Menu #}
+<div class="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu-header">
+    <span class="site-title">{{ site.name | default(value='Starter') }}</span>
+    <button class="mobile-menu-close" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Mobile navigation">
+    <ul class="mobile-menu-nav">
+      {% for item in menus.primary %}
+      <li>
+        <a href="{{ item.url }}">{{ item.title }}</a>
+      </li>
+      {% else %}
+      <li><a href="/">Home</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+</div>

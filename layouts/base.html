@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="{{ site.language | default(value='en') }}" {% if theme.darkMode %}class="{% block html_class %}{% endblock %}"{% endif %}>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
+
+  {# Canonical URL #}
+  <link rel="canonical" href="{{ current_url | default(value=site.url) }}">
+
+  {# Favicon #}
+  {% if site.favicon %}
+  <link rel="icon" href="{{ site.favicon }}" type="image/x-icon">
+  {% endif %}
+
+  {# RSS Feed #}
+  <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.url }}/feed.xml">
+
+  {# Open Graph #}
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:title" content="{% block og_title %}{{ site.name }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ site.description }}{% endblock %}">
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:url" content="{{ current_url | default(value=site.url) }}">
+  {% block og_image %}
+  {% if site.og_image %}
+  <meta property="og:image" content="{{ site.og_image }}">
+  {% endif %}
+  {% endblock %}
+
+  {# Twitter Card #}
+  <meta name="twitter:card" content="summary_large_image">
+  {% if site.twitter %}
+  <meta name="twitter:site" content="{{ site.twitter }}">
+  {% endif %}
+
+  {# Theme Styles #}
+  <link rel="stylesheet" href="/themes/starter-starter/assets/css/style.css">
+
+  {# Custom Styles #}
+  {% block head %}{% endblock %}
+
+  {# Preload fonts if using custom fonts #}
+  {% if theme.fonts.google %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family={{ theme.fonts.google }}&display=swap" rel="stylesheet">
+  {% endif %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {# Reading Progress Bar #}
+  {% if theme.features.readingProgress | default(value=true) %}
+  <div class="reading-progress" aria-hidden="true"></div>
+  {% endif %}
+
+  {# Skip Link #}
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
+  <div class="site-wrapper">
+    {# Header #}
+    {% include "partials/header.html" %}
+
+    {# Main Content #}
+    <main id="main-content" class="site-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    {# Footer #}
+    {% include "partials/footer.html" %}
+  </div>
+
+  {# Mobile Menu #}
+  {% include "partials/mobile-menu.html" %}
+
+  {# Back to Top #}
+  {% if theme.features.backToTop | default(value=true) %}
+  <button class="back-to-top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+  {% endif %}
+
+  {# Theme JavaScript #}
+  <script src="/themes/starter-starter/assets/js/theme.js"></script>
+
+  {# Additional Scripts #}
+  {% block scripts %}{% endblock %}
+</body>
+</html>
