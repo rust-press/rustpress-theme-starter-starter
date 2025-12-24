@@ -1,159 +1,89 @@
-# Starter Starter Theme
+# RustPress Theme: Starter
 
-A clean, minimalist blog theme for RustPress focused on readability and simplicity.
+A minimal starter theme for custom development for RustPress CMS.
+
+[![CI](https://github.com/rust-press/rustpress-theme-starter-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/rust-press/rustpress-theme-starter-starter/actions/workflows/ci.yml)
+[![Release](https://github.com/rust-press/rustpress-theme-starter-starter/actions/workflows/release.yml/badge.svg)](https://github.com/rust-press/rustpress-theme-starter-starter/actions/workflows/release.yml)
+
+## Preview
+
+![Theme Preview](screenshot.png)
 
 ## Features
 
-- **Minimal Design**: Clean typography, generous whitespace, distraction-free reading
-- **Dark Mode**: Automatic detection + manual toggle
-- **Responsive**: Mobile-first design that works on all devices
-- **Fast**: Lightweight CSS and minimal JavaScript
-- **Accessible**: ARIA labels, semantic HTML, keyboard navigation
-- **SEO Ready**: Open Graph, meta descriptions, semantic markup
+- Clean codebase
+- Easy customization
+- Basic blog layout
+- Simple navigation
+- Footer widgets
+- Responsive design
+- Well documented
 
 ## Installation
 
-1. Copy the `starter-starter` folder to your RustPress `themes/` directory
-2. Update your site configuration:
-   ```toml
-   [site]
-   theme = "starter-starter"
-   ```
-3. Restart your RustPress server
+### From GitHub Releases
+
+1. Download the latest release ZIP from the [Releases](https://github.com/rust-press/rustpress-theme-starter-starter/releases) page
+2. Upload via RustPress admin panel under **Appearance > Themes**
+3. Click **Activate** to enable the theme
+
+### Manual Installation
+
+```bash
+# Clone to your themes directory
+cd /path/to/rustpress/themes
+git clone https://github.com/rust-press/rustpress-theme-starter-starter.git starter-starter
+```
 
 ## Theme Structure
 
 ```
 starter-starter/
+├── theme.json          # Theme manifest
 ├── assets/
-│   ├── css/
-│   │   └── style.css       # All styles in one file
-│   └── js/
-│       └── theme.js        # Minimal JavaScript
-├── layouts/
-│   └── base.html           # Base layout
+│   ├── css/           # Stylesheets
+│   └── js/            # JavaScript files
 ├── templates/
-│   ├── partials/
-│   │   ├── header.html
-│   │   ├── footer.html
-│   │   ├── sidebar.html
-│   │   └── mobile-menu.html
-│   ├── home.html           # Homepage
-│   ├── single.html         # Blog posts
-│   ├── page.html           # Static pages
-│   ├── archive.html        # Category/tag archives
-│   ├── search.html         # Search results
-│   ├── author.html         # Author page
-│   ├── about.html          # About page
-│   ├── contact.html        # Contact page
-│   ├── categories.html     # Categories listing
-│   ├── tags.html           # Tags listing
-│   ├── privacy.html        # Privacy policy
-│   ├── 404.html            # Not found
-│   └── 500.html            # Server error
-├── theme.json              # Theme configuration
-└── README.md
+│   ├── home.html      # Homepage template
+│   ├── single.html    # Single post template
+│   ├── page.html      # Page template
+│   ├── archive.html   # Archive template
+│   └── partials/      # Reusable components
+└── layouts/
+    └── base.html      # Base layout
 ```
-
-## Available Templates (12 pages)
-
-| Template | Purpose |
-|----------|---------|
-| `home.html` | Homepage with post list |
-| `single.html` | Individual blog posts |
-| `page.html` | Static pages |
-| `archive.html` | Category/tag/author archives |
-| `search.html` | Search results |
-| `author.html` | Author profile |
-| `about.html` | About page |
-| `contact.html` | Contact form |
-| `categories.html` | Categories listing |
-| `tags.html` | Tags listing |
-| `privacy.html` | Privacy policy |
-| `404.html` | Not found error |
-| `500.html` | Server error |
 
 ## Customization
 
-### Colors
+Customize the theme through the RustPress admin panel under **Appearance > Customize**.
 
-Edit the CSS variables in `style.css`:
+Available options:
+- Colors and typography
+- Header and footer settings
+- Layout options
+- Custom CSS
 
-```css
-:root {
-  --color-accent: #0066CC;    /* Links and accents */
-  --text-primary: #1A1A1A;    /* Main text */
-  --text-secondary: #666666;  /* Secondary text */
-  --bg-primary: #FFFFFF;      /* Background */
-  --bg-secondary: #F8F9FA;    /* Secondary background */
-}
-```
+## Requirements
 
-### Typography
-
-```css
-:root {
-  --font-heading: Georgia, 'Times New Roman', serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-```
-
-### Layout
-
-```css
-:root {
-  --container-width: 720px;   /* Content width */
-  --container-wide: 1100px;   /* Wide content width */
-}
-```
-
-## Theme Features
-
-### Dark Mode
-
-The theme respects `prefers-color-scheme` and includes a manual toggle. Dark mode preference is saved in localStorage.
-
-### Reading Progress
-
-A subtle progress bar at the top shows how far the reader has scrolled through an article.
-
-### Back to Top
-
-A button appears when scrolling down to quickly return to the top of the page.
-
-### Social Sharing
-
-Single posts include share buttons for Twitter, Facebook, LinkedIn, and copy link.
-
-### Author Box
-
-Posts can display an author bio and social links at the bottom.
-
-## Configuration (theme.json)
-
-```json
-{
-  "features": {
-    "stickyHeader": false,
-    "backToTop": true,
-    "readingProgress": true,
-    "socialShare": true,
-    "authorBox": true
-  }
-}
-```
+- RustPress 1.0.0 or later
 
 ## Browser Support
 
-- Chrome (last 2 versions)
-- Firefox (last 2 versions)
-- Safari (last 2 versions)
-- Edge (last 2 versions)
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
-## Philosophy
+## Contributing
 
-This theme follows the principle that good design should be invisible. The focus is on your content, not the design itself. Every element serves a purpose, and nothing is added unnecessarily.
+Contributions are welcome! Please read the [RustPress Contributing Guide](https://github.com/rust-press/rustpress/blob/main/CONTRIBUTING.md).
 
 ## License
 
-MIT License - use freely for personal and commercial projects.
+MIT License - see [LICENSE](LICENSE) for details.
+
+## Links
+
+- [RustPress Core](https://github.com/rust-press/rustpress)
+- [Theme Documentation](https://rustpress.org/docs/themes/starter-starter)
+- [Issue Tracker](https://github.com/rust-press/rustpress-theme-starter-starter/issues)
